@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <p id="newPerson"></p>
+    <p id="enter-Person"></p>
+    <ul id="list"></ul>
+    <form id="form">
+        <input type="text" id="msg">
+        <button id="btn">Send</button>
+    </form>
+    <p id="disconect"></p>
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+
+        const socket = io();
+        const socket2 = io();
+        const form = document.querySelector("#form");
+        const msg = document.querySelector("#msg");
+        const list = document.querySelector("#list");
+        const enterPerson = document.querySelector("#enter-Person");
+        const disconect = document.querySelector("#disconect");
+        const newPerson = document.querySelector("#newPerson");
+        const nameOfPerson = prompt("Enter Your Name: ");
+        if (nameOfPerson) {
+            socket.emit('nameOfPerson', nameOfPerson);
+
+        }
+        socket.on('new Person conneected', (nameOfPerson) => {
+            const newPersonEnter = document.createElement('li');
+            alert("New user Enter the chat: " + nameOfPerson);
+            newPersonEnter.innerHTML = `New user Entered The Chat : ${nameOfPerson}`;
+            newPersonEnter.style.color = "red"
+                newPerson.appendChild(newPersonEnter)
+            
+        })
+        form.addEventListener("submit", (e) => {
+            e.preventDefault();
+            if (msg.value) {
+                socket.emit('Chat App', msg.value, nameOfPerson);
+                msg.value = "";
+            }
+        });
+        socket.on('Chat App', (message, nameOfPerson) => {
+            const item = document.createElement('li');
+            item.innerHTML = `${nameOfPerson}:${message}`;
+            list.appendChild(item);
+        });
+        socket.on('nameOfPerson', (nameOfPerson) => {
+            const disconectP = document.createElement('li');
+            disconectP.innerHTML = `User Disconnected the chat : ${nameOfPerson}`;
+            disconect.appendChild(disconectP);
+        })
+
+
+
+    </script>
+</body>
+
+</html>
