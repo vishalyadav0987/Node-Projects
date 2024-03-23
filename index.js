@@ -2,7 +2,7 @@ const express = require('express');
 const socket = require('socket.io');
 const path = require('path')
 const app = express();
-const server = app.listen(4000, () => {
+const server = app.listen(3000, () => {
     console.log(`Server Runing at http://localhost:${4000}`);
 
 });
